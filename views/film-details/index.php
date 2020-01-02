@@ -6,6 +6,7 @@ $this->title = 'Film List';
 
 <? echo GridView::widget([
     'dataProvider' => $dataProvider,
+    'filterModel' => $model,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         'film_id',

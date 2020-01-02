@@ -17,18 +17,21 @@ class FilmDetailsController extends Controller
 {
     public function actionIndex()
     {
-        $query = Film::find()
-            ->where(['status' => 1])
-            ->with(['categories', 'language']);
+        // $query = Film::find()
+        //     ->where(['status' => 1])
+        //     ->with(['categories', 'language']);
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 10
-            ]
-        ]);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => $query,
+        //     'pagination' => [
+        //         'pageSize' => 10
+        //     ]
+        // ]);
 
-        return $this->render('index', ['dataProvider' => $dataProvider]);
+        $model = new FilmSearch();
+        $dataProvider = $model->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', ['model' => $model, 'dataProvider' => $dataProvider]);
     }
 
     public function actionView($id)
