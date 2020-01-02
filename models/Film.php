@@ -46,7 +46,7 @@ class Film extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['title', 'description'], 'required', 'message' => '{attribute} tidak boleh kosong.'],
             [['description', 'rating', 'special_features'], 'string'],
             [['release_year', 'last_update'], 'safe'],
             [['language_id', 'original_language_id', 'rental_duration', 'length', 'status'], 'integer'],
@@ -64,7 +64,7 @@ class Film extends \yii\db\ActiveRecord
     {
         return [
             'film_id' => 'Film ID',
-            'title' => 'Title',
+            'title' => 'Tajuk',
             'description' => 'Description',
             'release_year' => 'Release Year',
             'language_id' => 'Language ID',
@@ -135,4 +135,6 @@ class Film extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Inventory::className(), ['film_id' => 'film_id']);
     }
+
+
 }
