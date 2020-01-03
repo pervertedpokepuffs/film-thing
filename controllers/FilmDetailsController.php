@@ -106,13 +106,6 @@ class FilmDetailsController extends Controller
 
     public function actionDelete($id)
     {
-        // Delete all parents
-        $allInventory = Inventory::findAll(['film_id' => $id]);
-        foreach ($allInventory as $inventoryItem) {
-            Rental::deleteAll(['inventory_id' => $inventoryItem->attributes['inventory_id']]);
-        }
-        Inventory::deleteAll(['film_id' => $id]);
-
         $film = Film::findOne(['film_id' => $id]);
         $film->status = 0;
         $film->save();
