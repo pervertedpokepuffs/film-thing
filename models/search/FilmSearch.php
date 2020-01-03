@@ -2,16 +2,17 @@
 
 namespace app\models\search;
 
-use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Film;
 
 class FilmSearch extends Film
 {
+    public $language;
+
     public function rules()
     {
         return [
-            [['film_id', 'language_id', 'original_language_id', 'rental_duration', 'length', 'status'], 'integer'],
+            [['film_id', 'language_id', 'original_language_id', 'rental_duration', 'length', 'status','language'], 'integer'],
             [['special_features' ,'title', 'language_id', 'description', 'release_year', 'rating', 'special_features', 'last_update', 'filmCategories.category_id'], 'safe'],
             [['rental_rate', 'replacement_cost'], 'number'],
         ];
@@ -37,6 +38,9 @@ class FilmSearch extends Film
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
         ]);
 
         $dataProvider->sort->attributes['filmCategories.category_id'] = [
@@ -58,7 +62,7 @@ class FilmSearch extends Film
         $query->andFilterWhere([
             'film.film_id' => $this->film_id,
             'release_year' => $this->release_year,
-            'film.language_id' => $this->language_id,
+            'film.language_id' => $this->language,
             'original_language_id' => $this->original_language_id,
             'rental_duration' => $this->rental_duration,
             'rental_rate' => $this->rental_rate,
