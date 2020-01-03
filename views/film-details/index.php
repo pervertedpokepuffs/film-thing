@@ -1,6 +1,8 @@
 <?php
 
 use yii\grid\GridView;
+use app\models\Category;
+use app\models\Language;
 $this->title = 'Film List';
 ?>
 
@@ -19,9 +21,12 @@ $this->title = 'Film List';
         'release_year',
         [
             'label' => 'Language',
-            'attribute' => 'language.name'
+            'attribute' => 'language_id',
+            'filter' => Language::get_languages(),
+            'value' => 'language.name'
         ],
         [
+            'attribute' => 'filmCategories.category_id',
             'label' => 'Categories',
             'value' => function ($query) {
                 if (is_array($query->categories)) {
@@ -31,6 +36,14 @@ $this->title = 'Film List';
                     }
                     return implode(', ', $categories_array);
                 }
+            },
+            'filter' => Category::get_categories()
+        ],
+        [
+            'label' => 'Special Features',
+            'value' => function ($query) {
+                $exploded_string = explode(',', $query->attributes['special_features']);
+                return implode(', ', $exploded_string);
             }
         ],
         [
