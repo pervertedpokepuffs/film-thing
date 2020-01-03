@@ -1,10 +1,11 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
 use app\models\Film;
+use app\models\Store;
+use yii\helpers\Html;
 
-$this->title = $model->attributes['inventory_id'] . ': ' .  $model->film->attributes['title'];
+$this->title = 'Create New Inventory';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -14,7 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 $form = ActiveForm::begin([
     'id' => 'inventory-form',
 ]);
-echo $form->field($model, 'film_id')->dropDownList(Film::get_films())->label('Reassign New Film');
+echo $form->field($model, 'film_id')->dropDownList(Film::get_films())->label('Create New Film');
+echo $form->field($model, 'store_id')->dropDownList(Store::get_stores());
 ?>
 <div class="form-group">
     <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>

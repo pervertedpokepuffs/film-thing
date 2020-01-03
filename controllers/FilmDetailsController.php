@@ -91,16 +91,10 @@ class FilmDetailsController extends Controller
                 $query->save();
             $this->redirect(['view', 'id' => $id]);
         } else {
-            $allLanguages = Language::find()
-                ->orderBy(['name' => SORT_ASC])
-                ->all();
-            $allCategories = Category::find()
-                ->orderBy(['name' => SORT_ASC])
-                ->all();
             $model_film = new FilmCategory();
             // $this->_pre_var_export($category_query);
             // die();
-            return $this->render('update', ['model' => $query, 'allLanguages' => $allLanguages, 'allCategories' => $allCategories, 'model_film' => $model_film]);
+            return $this->render('create', ['model' => $query, 'model_film' => $model_film]);
         }
     }
 
@@ -111,6 +105,38 @@ class FilmDetailsController extends Controller
         $film->save();
 
         return $this->redirect('index');
+    }
+
+    public function actionCreate()
+    {
+        $query = new Film();
+
+        if ($query->load(Yii::$app->request->post())) {
+            $query->last_update = date('Y-m-d H:i:s');
+            $query->release_year = $query->release_year;
+            if ($query->validate())
+                $query->save();
+            $checked_film_categories = Yii::$app->request->post('FilmCategory');
+            // check if ($checked_film_categories, $film_id) pair !exists
+            // generate pair
+            foreach ($checked_film_categories['category_id'] as $film_category) {
+                if (!count(FilmCategory::findAll(['category_id' => $film_category, 'film_id' => $query->film_id]))) {
+                    $newPair = new FilmCategory();
+                    $newPair->category_id = $film_category;
+                    $newPair->film_id = $query->film_id;
+                    $newPair->last_update = date('Y-m-d H:i:s');
+                    if ($newPair->validate())
+                        $newPair->save();
+                }
+            }
+
+            $this->redirect(['view', 'id' => $query->film_id]);
+        } else {
+            $model_film = new FilmCategory();
+            // $this->_pre_var_export($category_query);
+            // die();
+            return $this->render('create', ['model' => $query, 'model_film' => $model_film]);
+        }
     }
 
     public function _pre_var_export($object)

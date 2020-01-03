@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use app\models\Language;
 use app\models\Category;
 
-$this->title = $model->attributes['film_id'] . ': ' .  $model->attributes['title'];
+$this->title = 'Create New Movie';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -19,9 +19,9 @@ echo $form->field($model, 'release_year')->textInput(['type' => 'number']);
 echo $form->field($model, 'language_id')->dropDownList(Language::get_languages())->label('Language');
 echo $form->field($model, 'original_language_id')->dropDownList(Language::get_languages())->label('Original Language');
 echo $form->field($model, 'rental_duration')->textInput(['type' => 'number']);
-echo $form->field($model, 'rental_rate')->textInput(['type' => 'number']);
+echo $form->field($model, 'rental_rate')->textInput(['type' => 'number', 'step' => '0.01']);
 echo $form->field($model, 'length')->textInput(['type' => 'number']);
-echo $form->field($model, 'replacement_cost')->textInput(['type' => 'number']);
+echo $form->field($model, 'replacement_cost')->textInput(['type' => 'number', 'step' => '0.01']);
 echo $form->field($model, 'rating')->textInput();
 echo $form->field($model, 'special_features')->textInput();
 echo $form->field($model_film, 'category_id[]')->checkboxList(Category::get_categories(), ['separator' => '<br />'])->label('New Category');

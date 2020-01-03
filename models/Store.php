@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "store".
@@ -94,5 +95,11 @@ class Store extends \yii\db\ActiveRecord
     public function getManagerStaff()
     {
         return $this->hasOne(Staff::className(), ['staff_id' => 'manager_staff_id']);
+    }
+
+    public static function get_stores()
+    {
+        $stores = Store::find()->orderBy(['store_id' => SORT_ASC])->asArray()->all();
+        return ArrayHelper::map($stores, 'store_id','store_id');
     }
 }

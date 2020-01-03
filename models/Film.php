@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "film".
@@ -136,5 +137,9 @@ class Film extends \yii\db\ActiveRecord
         return $this->hasMany(Inventory::className(), ['film_id' => 'film_id']);
     }
 
-
+    public static function get_films()
+    {
+        $films = Film::find()->orderBy(['title' => SORT_ASC])->asArray()->all();
+        return ArrayHelper::map($films, 'film_id', 'title');
+    }
 }

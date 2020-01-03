@@ -44,7 +44,7 @@ class FilmController extends Controller
             ->where(['inventory_id' => $id])
             ->with(['film.language', 'film.categories', 'film.originalLanguage'])
             ->one();
-        
+
         if ($query->load(Yii::$app->request->post()) && $query->validate()) {
             $query->last_update = date('Y-m-d H:i:s');
             // $this->_pre_var_export($query);
@@ -68,6 +68,23 @@ class FilmController extends Controller
             ->delete();
 
         return $this->redirect('index');
+    }
+
+    public function actionCreate()
+    {
+        $query = new Inventory();
+
+        if ($query->load(Yii::$app->request->post())) {
+            $query->last_update = date('Y-m-d H:i:s');
+            // $this->_pre_var_export($query);
+            // die();
+            if ($query->validate())
+                $query->isNewRecord = true;
+                $query->save();
+            $this->redirect(['view', 'id' => $query->inventory_id]);
+        } else {
+            return $this->render('create', ['model' => $query]);
+        }
     }
 
     public function _pre_var_export($object)
