@@ -30,6 +30,7 @@ class FilmSearch extends Film
     public function search($params)
     {
         $query = Film::find()
+            ->where(['status' => 1])
             ->joinWith('filmCategories', 'language');
 
         // add conditions that should always apply here

@@ -112,10 +112,22 @@ class FilmDetailsController extends Controller
         $query = new Film();
 
         if ($query->load(Yii::$app->request->post())) {
-            $query->last_update = date('Y-m-d H:i:s');
-            $query->release_year = $query->release_year;
-            if ($query->validate())
-                $query->save();
+            if (count(Film::findAll(['title' => $query->title]))) {
+                $query = Film::find()
+                    ->where(['title' => $query->title])
+                    ->one();
+                $query->status = 1;
+                $query->last_update = date('Y-m-d H:i:s');
+                $query->release_year = $query->release_year;
+                if ($query->validate())
+                    $query->save();
+            } else {
+                $query->last_update = date('Y-m-d H:i:s');
+                $query->release_year = $query->release_year;
+                $query->status = 1;
+                if ($query->validate())
+                    $query->save();
+            }
             $checked_film_categories = Yii::$app->request->post('FilmCategory');
             // check if ($checked_film_categories, $film_id) pair !exists
             // generate pair
